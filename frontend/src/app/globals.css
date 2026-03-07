@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/* ყოველთვის მუქი თემა — არ არის დამოკიდებული ბრაუზერის რეჟიმზე */
+:root {
+  --background: #070d1a;
+  --foreground: #e8edf6;
+
+  --primary-dark: #0c1222;
+  --primary-blue: #4f8fff;
+  --primary-purple: #a855f7;
+  --accent-light: #38bdf8;
+  --accent-cyan: #22d3ee;
+  --accent-gold: #fbbf24;
+  --surface: #111827;
+  --surface-light: #1e293b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-blue: var(--primary-blue);
+  --color-primary-purple: var(--primary-purple);
+  --color-accent-light: var(--accent-light);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-gold: var(--accent-gold);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-purple) var(--primary-dark);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--primary-dark); }
+::-webkit-scrollbar-thumb { background: var(--primary-purple); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-blue); }
+
+/* Cosmic heading — ნათელი გრადიენტი ყოველთვის მკაფიო */
+.cosmic-heading {
+  background: linear-gradient(135deg, #22d3ee, #4f8fff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
