@@ -109,7 +109,7 @@ export function getFieldDescriptions(): Record<string, { name_ka: string; name_e
 }
 
 // ===== რესურსები და უნარები (mock - Django-ში არ არის) =====
-export function getResources() {
+export function getResources(): { id: number; title: string; type: "course" | "tool" | "journal" | "book"; url: string; description: string }[] {
   return [
     { id: 1, title: "MIT OpenCourseWare", type: "course", url: "https://ocw.mit.edu", description: "MIT-ის უფასო ონლაინ კურსები ყველა დარგში." },
     { id: 2, title: "Coursera", type: "course", url: "https://coursera.org", description: "მსოფლიოს წამყვანი უნივერსიტეტების ონლაინ კურსები." },
