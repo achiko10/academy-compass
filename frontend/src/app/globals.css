@@ -1,18 +1,26 @@
 @import "tailwindcss";
 
-/* ყოველთვის მუქი თემა — არ არის დამოკიდებული ბრაუზერის რეჟიმზე */
-:root {
-  --background: #070d1a;
-  --foreground: #e8edf6;
+@custom-variant dark (&:where(.dark, .dark *));
 
-  --primary-dark: #0c1222;
-  --primary-blue: #4f8fff;
-  --primary-purple: #a855f7;
-  --accent-light: #38bdf8;
-  --accent-cyan: #22d3ee;
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --primary-dark: #1e293b;
+  --primary-blue: #1e3a8a;
+  --primary-purple: #334155;
+  --accent-light: #e2e8f0;
+  --accent-cyan: #3b82f6;
   --accent-gold: #fbbf24;
-  --surface: #111827;
-  --surface-light: #1e293b;
+  --surface: #ffffff;
+  --surface-light: #f1f5f9;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --surface: #1e293b;
+  --surface-light: #334155;
 }
 
 @theme inline {
@@ -32,11 +40,7 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--primary-purple) var(--primary-dark);
-}
-
-html {
-  color-scheme: dark;
+  scrollbar-color: #94a3b8 #f1f5f9;
 }
 
 body {
@@ -48,13 +52,50 @@ body {
 }
 
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--primary-dark); }
-::-webkit-scrollbar-thumb { background: var(--primary-purple); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--primary-blue); }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
-/* Cosmic heading — ნათელი გრადიენტი ყოველთვის მკაფიო */
+.academic-title {
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  text-align: center;
+}
+
+.dark .academic-title {
+  color: #f8fafc; /* Slate 50 */
+}
+
+.academic-subtitle {
+  font-size: 1.125rem; /* text-lg */
+  line-height: 1.75rem;
+  color: #475569; /* Slate 600 */
+  max-width: 42rem; /* max-w-2xl */
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3.5rem; /* Adds space before cards */
+  text-align: center;
+  line-height: 1.6;
+}
+
+.dark .academic-subtitle {
+  color: #94a3b8; /* Slate 400 */
+}
+
 .cosmic-heading {
-  background: linear-gradient(135deg, #22d3ee, #4f8fff, #a855f7);
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.dark .cosmic-heading {
+  background: linear-gradient(135deg, #f8fafc 0%, #3b82f6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

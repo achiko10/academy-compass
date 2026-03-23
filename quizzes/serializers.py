@@ -4,7 +4,7 @@ from .models import Quiz, Question, Answer, QuizResult
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id', 'text', 'is_correct', 'points']
+        fields = ['id', 'text', 'is_correct', 'points', 'recommended_field']
 
 class QuestionSerializer(serializers.ModelSerializer):
     options = AnswerSerializer(many=True, read_only=True)
@@ -24,3 +24,4 @@ class QuizResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizResult
         fields = ['id', 'user', 'quiz', 'score', 'completed_at']
+        read_only_fields = ['user']

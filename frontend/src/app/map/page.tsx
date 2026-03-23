@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ScienceJourneyMap from "@/components/ScienceJourneyMap";
 import { Info, Search, MapPin } from "lucide-react";
 import { searchTerms } from '@/lib/api';
@@ -9,16 +10,33 @@ export default function MapPage() {
   const [selectedNode, setSelectedNode] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const handleSearch = async (q: string) => {
+  const handleSearch = (q: string) => {
     setSearchQuery(q);
+    
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    
     if (q.length > 1) {
-      const results = await searchTerms(q);
-      setSearchResults(Array.isArray(results) ? results : results.results || []);
+      setIsSearching(true);
+      searchTimeout.current = setTimeout(async () => {
+        try {
+          const results = await searchTerms(q);
+          setSearchResults(results);
+        } catch (err) {
+          console.error("Search failed", err);
+          setSearchResults([]);
+        } finally {
+          setIsSearching(false);
+        }
+      }, 500); // 500ms debounce
     } else {
       setSearchResults([]);
+      setIsSearching(false);
     }
   };
+
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row gap-8">
@@ -35,7 +53,18 @@ export default function MapPage() {
             placeholder="მოძებნე ტერმინი..."
             className="w-full bg-surface border border-foreground/15 rounded-lg px-4 py-2 text-sm text-foreground focus:outline-none focus:border-accent-cyan transition-colors"
           />
-          {searchResults.length > 0 && (
+          {isSearching && (
+            <div className="mt-4 text-xs text-accent-cyan text-center flex justify-center items-center gap-2">
+              <div className="w-3 h-3 border-2 border-accent-cyan rounded-full border-t-transparent animate-spin"></div>
+              ვეძებთ...
+            </div>
+          )}
+          {!isSearching && searchQuery.length > 1 && searchResults.length === 0 && (
+            <div className="mt-4 text-xs text-foreground/50 text-center">
+              შედეგი არ მოიძებნა
+            </div>
+          )}
+          {!isSearching && searchResults.length > 0 && (
             <div className="mt-3 space-y-2">
               {searchResults.map((term: any) => (
                 <div key={term.id} className="p-3 bg-surface-light rounded-lg border border-foreground/10">

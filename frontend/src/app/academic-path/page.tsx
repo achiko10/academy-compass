@@ -4,8 +4,8 @@ import Link from "next/link";
 export default function AcademicPathPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-16">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center cosmic-heading">აკადემიური გზა</h1>
-      <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto mb-16">სრული გზამკვლევი: სკოლიდან პროფესიულ მეცნიერულ კარიერამდე.</p>
+      <h1 className="academic-title">აკადემიური გზა</h1>
+      <p className="academic-subtitle">სრული გზამკვლევი: სკოლიდან პროფესიულ მეცნიერულ კარიერამდე.</p>
 
       <section className="mb-16">
         <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-3"><GraduationCap className="text-primary-blue" /> უნივერსიტეტის სისტემა</h2>

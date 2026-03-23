@@ -12,7 +12,7 @@ const researchSteps = [
 export default function ResearchPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-16">
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center cosmic-heading">კვლევა</h1>
+      <h1 className="academic-title cosmic-heading">კვლევა</h1>
       <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto mb-16">ნაბიჯ-ნაბიჯ გზამკვლევი კვლევის პროცესში — იდეიდან პუბლიკაციამდე.</p>
 
       <div className="relative mb-20">

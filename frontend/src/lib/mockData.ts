@@ -64,6 +64,8 @@ export const mapEdges: MapEdge[] = [
 ];
 
 // ===== სტატიები =====
+export type ArticleTag = string | { name_ka: string; name_en: string; [key: string]: unknown };
+
 export interface Article {
   id: number;
   title: string;
@@ -71,7 +73,7 @@ export interface Article {
   category: string;
   icon: string; // lucide icon name
   color: string;
-  tags: string[];
+  tags: ArticleTag[];
 }
 
 export const articles: Article[] = [
@@ -132,6 +134,18 @@ export const fieldDescriptions: Record<string, { name_ka: string; name_en: strin
 };
 
 // ===== რესურსები =====
+export interface ResourceItem {
+  id: number;
+  title: string;
+  url: string;
+}
+
+export interface ResourceCategory {
+  id: number;
+  title: string;
+  items: ResourceItem[];
+}
+
 export interface Resource {
   id: number;
   title: string;
@@ -154,17 +168,16 @@ export const resources: Resource[] = [
 // ===== უნარები =====
 export interface Skill {
   id: number;
-  name: string;
-  icon: string;
+  title: string;
+  level: string;
   description: string;
-  resources: string[];
 }
 
 export const skills: Skill[] = [
-  { id: 1, name: "კრიტიკული აზროვნება", icon: "Brain", description: "ინფორმაციის ობიექტურად შეფასება, ლოგიკური მსჯელობა და არგუმენტების ანალიზი.", resources: ["Coursera: Critical Thinking", "edX: Logic and Reasoning"] },
-  { id: 2, name: "კვლევის მეთოდები", icon: "Search", description: "კვანტიტატური და ხარისხობრივი კვლევის მეთოდოლოგია.", resources: ["Research Methods in Psychology", "MIT: Experimental Design"] },
-  { id: 3, name: "სტატისტიკა", icon: "BarChart3", description: "მონაცემთა ანალიზი, ჰიპოთეზის ტესტირება, შერჩევითი მეთოდები.", resources: ["Khan Academy: Statistics", "StatQuest on YouTube"] },
-  { id: 4, name: "პროგრამირება", icon: "Code", description: "Python, R — მონაცემთა ანალიზისა და მოდელირებისთვის.", resources: ["Python for Everybody", "R for Data Science"] },
-  { id: 5, name: "აკადემიური წერა", icon: "PenTool", description: "სამეცნიერო სტატია, ესე, დისერტაცია — სტრუქტურა და სტილი.", resources: ["Purdue OWL: Academic Writing", "APA Style Guide"] },
-  { id: 6, name: "მონაცემთა ვიზუალიზაცია", icon: "LineChart", description: "მონაცემების ვიზუალურად წარმოდგენა გრაფიკებისა და დიაგრამების გამოყენებით.", resources: ["D3.js Tutorials", "Tableau Public"] },
+  { id: 1, title: "კრიტიკული აზროვნება", level: "Intermediate", description: "ინფორმაციის ობიექტურად შეფასება, ლოგიკური მსჯელობა და არგუმენტების ანალიზი." },
+  { id: 2, title: "კვლევის მეთოდები", level: "Advanced", description: "კვანტიტატური და ხარისხობრივი კვლევის მეთოდოლოგია." },
+  { id: 3, title: "სტატისტიკა", level: "Intermediate", description: "მონაცემთა ანალიზი, ჰიპოთეზის ტესტირება, შერჩევითი მეთოდები." },
+  { id: 4, title: "პროგრამირება", level: "Intermediate", description: "Python, R — მონაცემთა ანალიზისა და მოდელირებისთვის." },
+  { id: 5, title: "აკადემიური წერა", level: "Advanced", description: "სამეცნიერო სტატია, ესე, დისერტაცია — სტრუქტურა და სტილი." },
+  { id: 6, title: "მონაცემთა ვიზუალიზაცია", level: "Intermediate", description: "მონაცემების ვიზუალურად წარმოდგენა გრაფიკებისა და დიაგრამების გამოყენებით." },
 ];

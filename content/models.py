@@ -14,3 +14,25 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+class ResourceCategory(models.Model):
+    title = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.title
+
+class Resource(models.Model):
+    category = models.ForeignKey(ResourceCategory, on_delete=models.CASCADE, related_name='items')
+    title = models.CharField(max_length=255)
+    url = models.URLField(blank=True)
+
+    def __str__(self):
+        return self.title
+
+class Skill(models.Model):
+    title = models.CharField(max_length=255)
+    level = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.title

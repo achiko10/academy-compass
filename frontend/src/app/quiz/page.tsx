@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useState, useEffect } from "react";
-import { Brain, Send, Sparkles, RotateCcw, Trophy } from "lucide-react";
-import { getQuizQuestions, getFieldDescriptions } from '@/lib/api';
+import { Brain, Send, Sparkles, RotateCcw, Trophy, Loader2 } from "lucide-react";
+import { getQuizQuestions, getFieldDescriptions, QuizQuestion } from '@/lib/api';
 
 export default function QuizPage() {
-  const [questions, setQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  const [quizId, setQuizId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
   const [currentQ, setCurrentQ] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [finished, setFinished] = useState(false);
@@ -17,12 +21,32 @@ export default function QuizPage() {
   ]);
   const [input, setInput] = useState("");
 
-  useEffect(() => { (async () => { setQuestions(await getQuizQuestions()); })(); }, []);
+  useEffect(() => {
+    getQuizQuestions()
+      .then((data) => {
+        setQuestions(data.questions);
+        setQuizId(data.id);
+      })
+      .catch(() => setQuestions([]))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const handleAnswer = (field: string, points: number) => {
-    setScores(prev => ({ ...prev, [field]: (prev[field] || 0) + points }));
-    if (currentQ < questions.length - 1) setCurrentQ(prev => prev + 1);
-    else setFinished(true);
+
+  const handleAnswer = async (field: string, points: number) => {
+    const newScores = { ...scores, [field]: (scores[field] || 0) + points };
+    setScores(newScores);
+    
+    if (currentQ < questions.length - 1) {
+      setCurrentQ(prev => prev + 1);
+    } else {
+      setFinished(true);
+      // Submit result to backend
+      if (quizId) {
+        const totalScore = Object.values(newScores).reduce((a, b) => a + b, 0);
+        const success = await import('@/lib/api').then(m => m.submitQuizResult(totalScore, quizId));
+        console.log('Quiz submission success:', success);
+      }
+    }
   };
 
   const getTopFields = () => Object.entries(scores).sort(([, a], [, b]) => b - a).slice(0, 3).map(([field]) => field);
@@ -102,7 +126,7 @@ export default function QuizPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-blue/8 rounded-full blur-3xl pointer-events-none" />
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-foreground/10 relative z-10">
           <Sparkles className="text-accent-gold" />
-          <h2 className="text-xl font-bold text-foreground">AI კარიერული მრჩეველი</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">AI კარიერული მრჩეველი</h2>
         </div>
         <div className="flex-1 overflow-y-auto space-y-4 pr-2 mb-4 relative z-10">
           {messages.map((msg, i) => (

@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { useEffect, useState } from 'react';
 import { getArticles } from '@/lib/api';
-import type { Article } from '@/lib/mockData';
+import type { Article, ArticleTag } from '@/lib/mockData';
 import { Microscope, Beaker, Cpu, Leaf, Globe, Search, PenTool } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
@@ -25,21 +27,41 @@ const colorMap: Record<string, string> = {
 export default function SciencePage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [selected, setSelected] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => { setArticles(await getArticles()); })();
+    (async () => { 
+      try {
+        const data = await getArticles();
+        setArticles(data);
+      } catch (err) {
+        setError("სტატიების ჩამოტვირთვა ვერ მოხერხდა. გთხოვთ სცადოთ მოგვიანებით.");
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, []);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-16">
-      <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center cosmic-heading">
+      <h1 className="academic-title">
         რა არის მეცნიერება?
       </h1>
-      <p className="text-lg text-center text-foreground/80 max-w-2xl mx-auto mb-16">
+      <p className="academic-subtitle">
         აღმოაჩინე მეცნიერების ისტორია, უდიდესი აღმოჩენები და მათი გავლენა ჩვენს ყოველდღიურ ცხოვრებაზე.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      {loading ? (
+        <div className="flex justify-center items-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-cyan"></div>
+        </div>
+      ) : error ? (
+        <div className="bg-red-500/10 border border-red-500/30 text-red-500 p-6 rounded-2xl text-center max-w-lg mx-auto">
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {articles.map((article) => (
           <div
             key={article.id}
@@ -56,14 +78,17 @@ export default function SciencePage() {
             <p className="text-sm text-foreground/60 leading-relaxed">{article.content.slice(0, 120)}...</p>
             {article.tags.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-4">
-                {article.tags.map((tag, i) => (
-                  <span key={i} className="text-[10px] px-2 py-0.5 bg-accent-cyan/15 text-accent-cyan rounded-full">{tag}</span>
+                {article.tags.map((tag: ArticleTag, i: number) => (
+                  <span key={i} className="text-[10px] px-2 py-0.5 bg-accent-cyan/15 text-accent-cyan rounded-full">
+                    {typeof tag === 'object' && tag !== null ? (tag as { name_ka: string }).name_ka : tag}
+                  </span>
                 ))}
               </div>
             )}
           </div>
         ))}
       </div>
+      )}
 
       {selected && (
         <div className="bg-surface/80 border border-accent-cyan/30 rounded-3xl p-8 mb-12">

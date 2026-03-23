@@ -21,6 +21,7 @@ class Answer(models.Model):
     is_correct = models.BooleanField(default=False)
     # Could map to recommended field/points for career test
     points = models.IntegerField(default=0)
+    recommended_field = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return self.text
